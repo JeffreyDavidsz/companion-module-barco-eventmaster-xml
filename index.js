@@ -65,7 +65,7 @@ instance.prototype.config_fields = function () {
 				id: 'info',
 				width: 12,
 				label: 'Information',
-				value: 'This module is for the Barco Eventmaster Toolset XML version. Be Carefull, no suport from Barco!'
+				value: 'This module is for the Barco Eventmaster Toolset xml version. <br> Be Carefull, <strong>no support from Barco!</strong><br> You need to fill in the MAC address of the unit when you want to use multiviewer layout switch. You wil find it by pressing the arrow down next to IP address under discovered. <br><br>Hit Ctrl+o or Cmd+o for xml output from EMT'
 			},
 			{
 				type: 'textinput',
@@ -79,7 +79,7 @@ instance.prototype.config_fields = function () {
 				id: 'macAddress',
 				label: 'Target MAC-Address',
 				width: 18,
-				regex: '/^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$/'
+				regex: '/^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/'
 			}
 		]
 };
@@ -168,8 +168,9 @@ instance.prototype.action = function (action) {
 
 			case 'multiviewerlayout':
 			if (self.tcp !== undefined) {
-				debug('sending to', self.tcp.macAddress);
-				self.tcp.write(`<System id="0" GUID="542696d038d3-bcc201"><FrameCollection id="0"><Frame id="${self.tcp.macAddress}"><MultiViewer id="0"><LayoutSelect>'+opt.layoutNumber+'</LayoutSelect></MultiViewer></Frame></FrameCollection></System>`);
+				debug('sending multiviewer change to', self.config.macAddress);
+				self.tcp.write('<System id="0" GUID="542696d038d3-bcc201"><FrameCollection id="0"><Frame id="' + self.config.macAddress + '"><MultiViewer id="0"><LayoutSelect>' + opt.layoutNumber + '</LayoutSelect></MultiViewer></Frame></FrameCollection></System>');
+
 			}
 			break;
 
